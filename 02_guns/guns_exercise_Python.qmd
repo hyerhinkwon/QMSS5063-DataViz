@@ -1,0 +1,202 @@
+---
+title: "Guns and Deaths in America"
+author: "Thomas Brambor"
+format:
+  gfm:
+    toc: true
+  html:
+    toc: true
+    code-fold: false
+    theme: cosmo
+---
+
+# Introduction
+
+- In preparation for your first homework assignment, I would like you to do an exploration of some data similar to what I will ask you next week for the first graded assignment.
+- This is not required. Choose to invest as little or as much time as you feel appropriate. But this is the way to learn and apply the things we cover in lecture and the tutorials I asked you to complete.
+- Advantage is that for this exercise you can share, ask questions freely, and get to know `plotnine` / `altair` / `seaborn` better if you have not already.
+- I have collected a few data sources that may be helpful to the analysis. Feel free to use them, combine them, or even add other sources if you feel ambitious.
+
+**Task:** Explore the relationship between gun ownership, gun laws, and gun-related deaths in America. Try to first *explore the data* and then think about which aspects of the things you learned you want to present to a reader.
+
+![](NYTimes_gunsales.png){width=80%}
+
+# Data Sources
+
+## Setup
+
+```{python setup}
+#| message: false
+#| warning: false
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from plotnine import *  # For ggplot-style plotting
+import altair as alt    # For interactive visualizations
+```
+
+## Gun Ownership (RAND)
+
+RAND has collected state-level data on household firearm ownership in this [study](https://www.rand.org/pubs/tools/TL354.html). 
+
+```{python load_ownership}
+#| message: false
+#| warning: false
+
+gun_ownership = pd.read_csv("data/gun_ownership.csv")
+gun_ownership.head(10)
+```
+
+The data includes:
+- HFR: Household firearm ownership rate
+- HFR_se: Standard error of the household firearm rate
+- Various survey indicators (BRFSS, GALLUP, GSS, PEW)
+- Hunting license and background check data
+
+## Gun Sales (NY Times)
+
+```{python load_sales}
+#| message: false
+#| warning: false
+
+gunsales = pd.read_csv("data/gun_sales.csv")
+gunsales.head(10)
+```
+
+## Firearm Deaths (Kaiser Family Foundation)
+
+```{python load_deaths}
+#| message: false
+#| warning: false
+
+gun_deaths = pd.read_csv("data/gun_deaths.csv")
+gun_deaths.head(10)
+```
+
+## Individual-Level Deaths (FiveThirtyEight)
+
+```{python load_individual}
+#| message: false
+#| warning: false
+
+gun_inddeaths = pd.read_csv("data/gun_deaths_individual.csv")
+gun_inddeaths.head(10)
+```
+
+## State Firearm Laws
+
+```{python load_laws}
+#| message: false
+#| warning: false
+
+gun_laws = pd.read_csv("data/gun_laws.csv")
+gun_laws.head(10)
+```
+
+# Analysis Topics
+
+Using these data sets, here are several possible questions to explore:
+
+- Gun Ownership vs. Firearm Deaths: How does the rate of gun ownership in different states correlate with the number of deaths due to firearms? Does gun ownership correlate with firearm deaths in the U.S.? Does the pattern hold only in the aggregate or also by state? 
+
+- Trends in Gun-related Deaths: What are the trends in gun-related deaths at the individual level over time? Use the FiveThirtyEight data to explore trends and patterns, possibly breaking down the data by factors like age, gender, or type of incident (e.g., homicide, suicide, accidental).
+
+- Impact of Events on Gun Sales: Can significant events (like mass shootings or political changes) be linked to spikes in gun sales? Use the NYTimes gunsales data to visualize changes over time and correlate these with major national or international events.
+
+- Effectiveness of Gun Laws: Analyze the impact of different state firearm laws on gun-related deaths and gun sales. This would involve a comparison between the State Firearm Database and the other datasets on gun deaths and gun ownership. Are gun regulations (e.g. child access prevention laws) associated with lower gun death rates? How about suicides (especially by non-adults)?
+
+- Demographic Analysis of Gun Deaths: Who are the victims of gun-related deaths? Using the individual-level data from FiveThirtyEight, analyze the demographics of victims, including age, sex, race, and the circumstances of their deaths (suicide, homicide, accidental).
+
+- Time Series Analysis of Gun Sales: How have gun sales changed over time across different states? Use time series visualizations to explore trends in gun sales data from the NYTimes dataset.
+
+- Comparative Analysis of State Gun Laws: How do state gun laws vary across the U.S., and have there been significant changes in legislation over time? Use the State Firearm Database to create visualizations that track the evolution of gun laws across different states and time periods.
+
+# Exercises
+
+Choose one or more of the following exercises to explore. For each analysis, consider:
+- What is the story you want to tell?
+- Which visualization type best supports your narrative?
+- How can you make the visualization clear and impactful?
+
+## 1. State-Level Analysis
+
+Explore the relationship between gun ownership and deaths across states:
+
+**Suggested approaches:**  
+- Compare HFR (household firearm rates) with death rates  
+- Group states by region or political leaning  
+- Consider controlling for population or other demographic factors  
+- Look for outliers and investigate their characteristics  
+
+**Key variables to consider:**  
+- From gun_ownership: HFR, STATE  
+- From gun_deaths: firearms_death_100k, location  
+
+## 2. Time Series Patterns
+
+Analyze temporal patterns in gun sales and related events:
+
+**Suggested approaches:**  
+- Identify significant spikes in gun sales  
+- Compare sales patterns across different states/regions  
+- Look for seasonal patterns  
+- Connect trends to major events (elections, mass shootings, policy changes)  
+
+**Key variables to consider:**  
+- From gunsales: month, totals, state  
+- Consider external data on major events  
+
+## 3. Demographic Analysis
+
+Investigate who is most affected by gun violence:
+
+**Suggested approaches:**  
+- Break down deaths by age groups, gender, and race  
+- Compare urban vs rural patterns  
+- Analyze different types of incidents (suicide, homicide, accident)  
+- Look for demographic trends over time  
+
+**Key variables to consider:**  
+- From gun_inddeaths: age, sex, race, intent  
+
+## 4. Policy Impact Analysis
+
+Examine the relationship between gun laws and outcomes:
+
+**Suggested approaches:**  
+- Compare states with different types of gun laws  
+- Look at changes before/after law implementation  
+- Consider specific types of restrictions (e.g., background checks, waiting periods)  
+- Account for neighboring state policies  
+
+**Key variables to consider:**  
+- From gun_laws: Various policy indicators  
+- Compare with death rates and sales data  
+
+## 5. Advanced Integration Project
+
+Combine multiple datasets to tell a comprehensive story:
+
+**Suggested approaches:**  
+- Pick a specific state or region to analyze in depth  
+- Follow changes over time in multiple metrics  
+
+**Tips for analysis:**  
+- Start with exploratory data analysis  
+- Look for unexpected patterns  
+- Consider confounding variables  
+- Document your analytical choices  
+
+## Sharing Guidelines
+
+When sharing your analysis:
+1. Clearly state your research question
+2. Explain your data preparation steps
+3. Justify your visualization choices
+4. Document any assumptions made
+5. Discuss limitations of the analysis
+6. Suggest areas for further investigation
+
+Upload your analysis to the `sandbox` repository in a folder called `Week02_guns`.
