@@ -1,5 +1,22 @@
 # Babynames Exercise (Python Version)
-Thomas Brambor
+Flora Kwon
+
+1.  Plot the most common names in the latest year over the entire
+    period.
+2.  Explore which names are most often used as unisex names. For which
+    names has the popularity over time changed a lot?
+3.  Identify one particular pattern in the data. For example:
+    - religious names are less/more common over time
+    - the top 5 names capture a different portion of all names at
+      different points in time
+    - there are more “unique” names now
+    - certain names became popular after historical events / figures
+      etc.
+    - some old names are making a revival after a certain time period
+      (say a generation?)
+
+Then try to capture this one pattern in a graphical display that
+highlights this one point.
 
 - [Introduction](#introduction)
 - [Analysis](#analysis)
@@ -140,22 +157,3 @@ latest_year = babynames_py['year'].max()
 ```
 
 ![](babynames_exercise_python_files/figure-commonmark/cell-7-output-1.png)
-
-# Exercises
-
-1.  Plot the most common names in the latest year over the entire
-    period.
-2.  Explore which names are most often used as unisex names. For which
-    names has the popularity over time changed a lot?
-3.  Identify one particular pattern in the data. For example:
-    - religious names are less/more common over time
-    - the top 5 names capture a different portion of all names at
-      different points in time
-    - there are more “unique” names now
-    - certain names became popular after historical events / figures
-      etc.
-    - some old names are making a revival after a certain time period
-      (say a generation?)
-
-Then try to capture this one pattern in a graphical display that
-highlights this one point.
