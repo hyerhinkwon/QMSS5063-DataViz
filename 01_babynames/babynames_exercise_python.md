@@ -1,44 +1,18 @@
 # Babynames Exercise (Python Version)
-Flora Kwon
+**Name:** Flora Kwon
 
-1.  Plot the most common names in the latest year over the entire
-    period.
-2.  Explore which names are most often used as unisex names. For which
-    names has the popularity over time changed a lot?
-3.  Identify one particular pattern in the data. For example:
-    - religious names are less/more common over time
-    - the top 5 names capture a different portion of all names at
-      different points in time
-    - there are more “unique” names now
-    - certain names became popular after historical events / figures
-      etc.
-    - some old names are making a revival after a certain time period
-      (say a generation?)
+**Course:** QMSS 5063 - Data Visualization
 
-Then try to capture this one pattern in a graphical display that
-highlights this one point.
+**Term:** Spring 2025
 
-- [Introduction](#introduction)
-- [Analysis](#analysis)
-  - [Data Loading](#data-loading)
-  - [Data Exploration](#data-exploration)
-  - [Single Name Analysis](#single-name-analysis)
-  - [Top 10 Names Analysis](#top-10-names-analysis)
-  - [Recent Trends (Latest Year)](#recent-trends-latest-year)
-- [Exercises](#exercises)
-
-# Introduction
+***Introduction***
 
 For each year from 1880 onwards, the data contains the number of
 children of each sex given each name. All names with more than 5 uses
 are given. This analysis uses the latest data from the SSA website.
 (Source: <http://www.ssa.gov/oact/babynames/limits.html>)
 
-<img src="baby-names-wordcloud.jpg" width="400" />
-
-# Analysis
-
-## Data Loading
+***Data Loading***
 
 ``` python
 import os
@@ -70,7 +44,7 @@ def get_babynames_data():
 babynames_py = get_babynames_data()
 ```
 
-## Data Exploration
+***Data Exploration***
 
 ``` python
 babynames_py.info()
@@ -94,16 +68,43 @@ babynames_py['n'].sum()/10**6      # Total babies (millions)
 
     np.float64(368.636238)
 
-## Single Name Analysis
+## 1.  Plot the most common names in the latest year over the entire period.
 
 ``` python
-(ggplot(babynames_py[babynames_py['name'] == "James"], 
-        aes(x='year', y='n', color='sex')) +
- geom_line() +
- labs(title='Popularity of the name "James" over time'))
+# Find the most recent year in the data
+latest_year = babynames_py['year'].max()
+
+# Plot
+plot = (ggplot(babynames_py[babynames_py['year'] == latest_year]
+        .sort_values('prop', ascending=False)
+        .head(10),
+        aes(x='reorder(name, -prop)', y='prop', fill='sex')) +
+ geom_col() +
+ coord_flip() +
+ theme_minimal() +
+ labs(x='', y=f'Proportion of Babies in {latest_year}',
+      title=f'Top 10 Baby Names in {latest_year}'))
+
+print(plot)
 ```
 
-![](babynames_exercise_python_files/figure-commonmark/cell-5-output-1.png)
+
+![](babynames_exercise_python_files/figure-commonmark/cell-7-output-1.png)
+
+## 2.  Explore which names are most often used as unisex names. For which names has the popularity over time changed a lot?
+
+
+
+## 3.  Identify one particular pattern in the data. Then try to capture this one pattern in a graphical display that highlights this one point.
+For example:
+    - religious names are less/more common over time
+    - the top 5 names capture a different portion of all names at
+      different points in time
+    - there are more “unique” names now
+    - certain names became popular after historical events / figures
+      etc.
+    - some old names are making a revival after a certain time period
+      (say a generation?)
 
 ## Top 10 Names Analysis
 
@@ -138,22 +139,3 @@ labs(title='Top 10 Male Names Over Time'))
 ```
 
 ![](babynames_exercise_python_files/figure-commonmark/cell-6-output-1.png)
-
-## Recent Trends (Latest Year)
-
-``` python
-# Find the most recent year in the data
-latest_year = babynames_py['year'].max()
-
-(ggplot(babynames_py[babynames_py['year'] == latest_year]
-        .sort_values('prop', ascending=False)
-        .head(10),
-        aes(x='reorder(name, -prop)', y='prop', fill='sex')) +
- geom_col() +
- coord_flip() +
- theme_minimal() +
- labs(x='', y=f'Proportion of Babies in {latest_year}',
-      title=f'Top 10 Baby Names in {latest_year}'))
-```
-
-![](babynames_exercise_python_files/figure-commonmark/cell-7-output-1.png)
